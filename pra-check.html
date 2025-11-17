@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PWA Checker - Suonare il Sax App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial; padding: 20px; background: #0b1526; color: #e8d29b; }
+h1 { color: #d9c083; }
+.ok { color: #7CFC00; font-weight: bold; }
+.err { color: #FF6347; font-weight: bold; }
+pre { background:#142033; padding:10px; border-radius: 4px; overflow:auto; }
+</style>
+</head>
+<body>
+
+<h1>Suonare il Sax App - PWA Checker</h1>
+
+<div id="output">Caricamento...</div>
+
+<script>
+async function checkPWA() {
+    let out = "";
+
+    // Check manifest
+    try {
+        let res = await fetch("manifest.json");
+        if (!res.ok) throw new Error("Errore: " + res.status);
+        let manifest = await res.json();
+        out += "<p class='ok'>✔ Manifest trovato e valido</p>";
+        out += "<pre>" + JSON.stringify(manifest, null, 2) + "</pre>";
+    } catch (e) {
+        out += "<p class='err'>✘ Manifest NON trovato o non valido</p>";
+        console.error(e);
+    }
+
+    // Check icons
+    let icons = ["icon-192.png", "icon-512.png"];
+    for (let icon of icons) {
+        try {
+            let res = await fetch(icon);
+            if (!res.ok) throw new Error("Errore: " + res.status);
+            out += `<p class='ok'>✔ Icona trovata: ${icon}</p>`;
+        } catch (e) {
+            out += `<p class='err'>✘ Icona NON trovata: ${icon}</p>`;
+        }
+    }
+
+    // Check service worker
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+            if (regs.length > 0) {
+                out += "<p class='ok'>✔ Service Worker registrato</p>";
+            } else {
+                out += "<p class='err'>✘ Service Worker NON registrato</p>";
+            }
+        });
+    } else {
+        out += "<p class='err'>✘ Il browser non supporta Service Worker</p>";
+    }
+
+    // Display result
+    document.getElementById("output").innerHTML = out;
+}
+
+checkPWA();
+</script>
+
+</body>
+</html>
