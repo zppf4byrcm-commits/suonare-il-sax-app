@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Suonare il Sax App</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b1526">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { margin:0; font-family:Arial; background:#0b1526; color:#e8d29b; }
+header { background:#0f1c33; padding:15px; text-align:center; font-size:22px; font-weight:bold; }
+.screen { display:none; padding:20px; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+.box { background:#142033; border-left:4px solid #d9c083; padding:15px; margin-bottom:12px; border-radius:6px; cursor:pointer; }
+.menu { position:fixed; bottom:0; width:100%; background:#0f1c33; display:flex; justify-content:space-around; padding:10px 0; }
+.menu button { background:none; border:none; color:#e8d29b; font-size:16px; cursor:pointer; }
+.btn { background:#d9c083; color:#0b1526; padding:12px 18px; border-radius:8px; border:none; font-weight:bold; cursor:pointer; margin-top:10px; }
+.inputBox { background:#0f1c33; padding:10px; border-radius:6px; margin-bottom:15px; }
+input, select { width:100%; padding:8px; margin-top:5px; border-radius:6px; border:none; }
+a { color:#d9c083; text-decoration:underline; cursor:pointer; }
+</style>
+
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
+
+function show(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.style.display='none');
+    document.getElementById(screen).style.display='block';
+}
+</script>
+
+</head>
+
+<body onload="show('login')">
+
+<header>Suonare il Sax App</header>
+
+<!-- LOGIN -->
+<div id="login" class="screen">
+    <h2>Accedi</h2>
+    <div class="inputBox">Email:<br><input placeholder="Email"></div>
+    <div class="inputBox">Password:<br><input type="password" placeholder="Password"></input></div>
+    <button class="btn" onclick="show('home')">Entra</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="screen">
+    <h2>Ultime Performance</h2>
+    <div class="box" onclick="show('player')"><b>Autumn Leaves</b> 🎷</div>
+    <div class="box" onclick="show('player')"><b>Scala Minore Melodica</b> 🎼</div>
+    <div class="box" onclick="show('player')"><b>Studi di Agilità</b> 📝</div>
+</div>
+
+<!-- CATEGORIES -->
+<div id="categories" class="screen">
+    <h2>Categorie</h2>
+    <div class="box" onclick="show('home')">🎼 Esercizi Tecnici</div>
+    <div class="box" onclick="show('home')">🎷 Brani Completi</div>
+    <div class="box" onclick="show('home')">🎤 Improvvisazioni</div>
+    <div class="box" onclick="show('home')">📚 Scale e Studi</div>
+</div>
+
+<!-- UPLOAD -->
+<div id="upload" class="screen">
+    <h2>Carica una Performance</h2>
+    <div class="inputBox">Titolo:<br><input placeholder="Inserisci il titolo"></div>
+    <div class="inputBox">Tipo:<br>
+        <select>
+            <option>Esercizio</option>
+            <option>Brano</option>
+            <option>Improvvisazione</option>
+        </select>
+    </div>
+    <div class="inputBox">Carica File:<br><small>(Simulazione nel prototipo)</small></div>
+    <button class="btn" onclick="alert('Simulazione: File caricato!')">Carica</button>
+</div>
+
+<!-- PROFILE -->
+<div id="profile" class="screen">
+    <h2>Profilo</h2>
+    <div class="box"><b>Nome:</b> Michele</div>
+    <div class="box"><b>Strumento:</b> Sax Tenore</div>
+    <div class="box"><b>YouTube:</b><br><a onclick="alert('Simulazione apertura link YouTube')">Vai al canale</a></div>
+</div>
+
+<!-- PLAYER -->
+<div id="player" class="screen">
+    <h2>Player</h2>
+    <div class="box">🎧 Player audio/video (simulazione)</div>
+    <button class="btn" onclick="show('home')">Torna alla Home</button>
+</div>
+
+<!-- MENU -->
+<div class="menu">
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('categories')">Categorie</button>
+    <button onclick="show('upload')">Upload</button>
+    <button onclick="show('profile')">Profilo</button>
+</div>
+
+</body>
+</html>
